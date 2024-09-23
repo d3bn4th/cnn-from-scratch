@@ -11,11 +11,6 @@ assert test_images.shape == (10000, 28, 28)
 assert train_labels.shape == (60000,)
 assert test_labels.shape == (10000,)
 
-# train_images = train_images()
-# train_labels = train_labels()
-# test_images = test_images()
-# test_labels = test_labels()
-
 train_images = (train_images / 255) - 0.5
 test_images = (test_images / 255) - 0.5
 
@@ -29,7 +24,6 @@ model = Sequential([
   Dense(10, activation='softmax'),
 ])
 
-# model.compile(SGD(lr=.005), loss='categorical_crossentropy', metrics=['accuracy'])
 model.compile(optimizer=SGD(learning_rate=0.005), loss='categorical_crossentropy', metrics=['accuracy'])
 
 model.fit(

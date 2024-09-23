@@ -1,15 +1,17 @@
-import mnist
 import numpy as np
 from conv import Conv3x3
 from maxpool import MaxPool2
 from softmax import Softmax
+from keras.datasets import mnist # only to import dataset
 
 # We only use the first 1k examples of each set in the interest of time.
 # Feel free to change this if you want.
-train_images = mnist.train_images()[:1000]
-train_labels = mnist.train_labels()[:1000]
-test_images = mnist.test_images()[:1000]
-test_labels = mnist.test_labels()[:1000]
+(train_images,train_labels), (test_images, test_labels) = mnist.load_data()
+
+train_images = train_images[:1000]
+train_labels = train_labels[:1000]
+test_images = test_images[:1000]
+test_labels = test_labels[:1000]
 
 conv = Conv3x3(8)                  # 28x28x1 -> 26x26x8
 pool = MaxPool2()                  # 26x26x8 -> 13x13x8
@@ -22,8 +24,7 @@ def forward(image, label):
   - image is a 2d numpy array
   - label is a digit
   '''
-  # We transform the image from [0, 255] to [-0.5, 0.5] to make it easier
-  # to work with. This is standard practice.
+  # We transform the image from [0, 255] to [-0.5, 0.5] to make it easier to work with. This is standard practice.
   out = conv.forward((image / 255) - 0.5)
   out = pool.forward(out)
   out = softmax.forward(out)
@@ -59,7 +60,7 @@ def train(im, label, lr=.005):
 print('MNIST CNN initialized!')
 
 # Train the CNN for 3 epochs
-for epoch in range(3):
+for epoch in range(100):
   print('--- Epoch %d ---' % (epoch + 1))
 
   # Shuffle the training data
