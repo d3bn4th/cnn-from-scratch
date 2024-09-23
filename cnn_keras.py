@@ -1,14 +1,20 @@
 import numpy as np
-import mnist
+from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten
 from keras.utils import to_categorical
 from keras.optimizers import SGD
 
-train_images = mnist.train_images()
-train_labels = mnist.train_labels()
-test_images = mnist.test_images()
-test_labels = mnist.test_labels()
+(train_images,train_labels), (test_images, test_labels) = mnist.load_data()
+assert train_images.shape == (60000, 28, 28)
+assert test_images.shape == (10000, 28, 28)
+assert train_labels.shape == (60000,)
+assert test_labels.shape == (10000,)
+
+# train_images = train_images()
+# train_labels = train_labels()
+# test_images = test_images()
+# test_labels = test_labels()
 
 train_images = (train_images / 255) - 0.5
 test_images = (test_images / 255) - 0.5
@@ -23,7 +29,8 @@ model = Sequential([
   Dense(10, activation='softmax'),
 ])
 
-model.compile(SGD(lr=.005), loss='categorical_crossentropy', metrics=['accuracy'])
+# model.compile(SGD(lr=.005), loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(optimizer=SGD(learning_rate=0.005), loss='categorical_crossentropy', metrics=['accuracy'])
 
 model.fit(
   train_images,
