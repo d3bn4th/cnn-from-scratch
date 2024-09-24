@@ -8,11 +8,12 @@ from keras.datasets import mnist # only to import dataset
 # Feel free to change this if you want.
 (train_images,train_labels), (test_images, test_labels) = mnist.load_data()
 
-train_images = train_images[:1000]
-train_labels = train_labels[:1000]
+train_images = train_images[:6000]
+train_labels = train_labels[:6000]
 test_images = test_images[:1000]
 test_labels = test_labels[:1000]
 
+# We’ll use a small conv layer with 8 filters as the initial layer in our network. This means it’ll turn the 28x28 input image into a 26x26x8
 conv = Conv3x3(8)                  # 28x28x1 -> 26x26x8
 pool = MaxPool2()                  # 26x26x8 -> 13x13x8
 softmax = Softmax(13 * 13 * 8, 10) # 13x13x8 -> 10
@@ -60,7 +61,7 @@ def train(im, label, lr=.005):
 print('MNIST CNN initialized!')
 
 # Train the CNN for 3 epochs
-for epoch in range(100):
+for epoch in range(3):
   print('--- Epoch %d ---' % (epoch + 1))
 
   # Shuffle the training data
@@ -96,3 +97,6 @@ for im, label in zip(test_images, test_labels):
 num_tests = len(test_images)
 print('Test Loss:', loss / num_tests)
 print('Test Accuracy:', num_correct / num_tests)
+
+
+

@@ -1,5 +1,9 @@
 import numpy as np
-
+""" 
+We will do that by using the standard final layer for a multiclass classification problem: the Softmax layer, a fully-connected (dense) layer that uses the Softmax function as its activation.
+Why  Softmax?
+ Converts raw output scores — also known as logits — into probabilities by taking the exponential of each output and normalizing these values by dividing by the sum of all the exponentials. This process ensures the output values are in the range (0,1) and sum up to 1, making them interpretable as probabilities.
+"""
 class Softmax:
   # A standard fully-connected layer with softmax activation.
 
@@ -16,14 +20,16 @@ class Softmax:
     '''
     self.last_input_shape = input.shape
 
-    input = input.flatten()
-    self.last_input = input
+    input = input.flatten() # flatten the 3d array to 1d array
+    self.last_input = input # forward phase caching
 
     input_len, nodes = self.weights.shape
 
+    # Passing the inputs through the neuron. 
     totals = np.dot(input, self.weights) + self.biases
-    self.last_totals = totals
+    self.last_totals = totals # forward phase caching
 
+    # Applying softmax e^xi/summation(e^xj)
     exp = np.exp(totals)
     return exp / np.sum(exp, axis=0)
 
@@ -67,3 +73,22 @@ class Softmax:
       self.biases -= learn_rate * d_L_d_b
 
       return d_L_d_inputs.reshape(self.last_input_shape)
+
+
+""" 
+Training Process:
+  # Feed forward
+  out = conv.forward((image / 255) - 0.5)
+  out = pool.forward(out)
+  out = softmax.forward(out)
+
+  # Calculate initial gradient
+  gradient = np.zeros(10)
+  # ...
+
+  # Backprop
+  gradient = softmax.backprop(gradient)
+  gradient = pool.backprop(gradient)
+  gradient = conv.backprop(gradient)
+
+"""

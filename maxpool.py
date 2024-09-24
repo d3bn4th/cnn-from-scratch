@@ -1,5 +1,7 @@
 import numpy as np
-
+"""
+Neighboring pixels in images tend to have similar values, so conv layers will typically also produce similar values for neighboring pixels in outputs. As a result, much of the information contained in a conv layers output is redundant.  
+"""
 class MaxPool2:
   # A Max Pooling layer using a pool size of 2.
 
@@ -25,11 +27,13 @@ class MaxPool2:
     '''
     self.last_input = input
 
-    h, w, num_filters = input.shape
-    output = np.zeros((h // 2, w // 2, num_filters))
+    h, w, num_filters = input.shape 
+    output = np.zeros((h // 2, w // 2, num_filters)) # Pooling divides the input’s width and height by the pool size.
 
     for im_region, i, j in self.iterate_regions(input):
-      output[i, j] = np.amax(im_region, axis=(0, 1))
+      # Max-Pooling
+      output[i, j] = np.amax(im_region, axis=(0, 1)) 
+      # We set axis=(0, 1) because we only want to maximize over the first two dimensions, height and width, and not the third, num_filters.
 
     return output
 
